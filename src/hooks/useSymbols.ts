@@ -34,9 +34,15 @@ export const useSymbols = (): RowData[] => {
     };
 
     getRows();
+
+    /* This update UI on every 5 second with the new changes fetched from the API
+    const intervalId = setInterval(() => {
+      getRows()
+    }, 5000);
+
+    return () => clearInterval(intervalId);*/
   }, []);
 
   return rows;
 };
-
 export default useSymbols;
