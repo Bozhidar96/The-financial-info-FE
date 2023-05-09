@@ -1,12 +1,7 @@
 import { useEffect, useState } from "react";
 import { ResponseData, RowData } from "../interfaces";
-import { SYMBOLS, API_URL } from "../constants";
-import axios from "axios";
-
-export const getSymbolName = (code: string): string => {
-  const symbol = SYMBOLS.find((symbol) => symbol.code === code);
-  return symbol ? symbol.name : "";
-};
+import { getSymbols } from "../api";
+import { getSymbolName } from "../util";
 
 export const useSymbols = (): RowData[] => {
   const [rows, setRows] = useState<RowData[]>([]);
@@ -14,14 +9,7 @@ export const useSymbols = (): RowData[] => {
   useEffect(() => {
     const getRows = async () => {
       try {
-        const response = await Promise.all(
-          SYMBOLS.map((symbol) =>
-            axios.get(`${API_URL}?symbols=${symbol.code}`).then((response) => ({
-              ...response.data,
-              name: symbol.name,
-            }))
-          )
-        );
+        const response = await getSymbols();
 
         const data = response.map((response: ResponseData) => {
           return {
@@ -35,10 +23,9 @@ export const useSymbols = (): RowData[] => {
           };
         });
 
-        const rows: RowData[] = data.map((data) => ({
-          symbol: data.symbol,
-          name: getSymbolName(data.symbol),
-          percentageChanges: data.percentageChanges,
+        const rows: RowData[] = data.map(({ symbol, percentageChanges }) => ({
+          name: getSymbolName(symbol),
+          percentageChanges: percentageChanges,
         }));
         setRows(rows);
       } catch (error: any) {

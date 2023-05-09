@@ -1,5 +1,4 @@
 export interface RowData {
-  symbol: string;
   name: string;
   percentageChanges: number;
 }
