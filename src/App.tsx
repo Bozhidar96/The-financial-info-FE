@@ -1,6 +1,17 @@
-import styled from "styled-components";
+import styled, { createGlobalStyle } from "styled-components";
 import useSymbols from "./hooks/useSymbols";
 import { RowData } from "./interfaces";
+import { Header } from "./components/Header";
+import { DaysPercantages } from "./components/DaysPercentages";
+
+const GlobalStyle = createGlobalStyle`
+  body {
+    background: #fff1e5;
+    font-family: sans-serif;
+    font-size: 18px;
+    padding: 20px;
+  }
+`;
 
 const Wrapper = styled.div`
   font-family: MetricWeb, sans-serif;
@@ -85,6 +96,9 @@ function App() {
 
   return (
     <div>
+      <GlobalStyle />
+      <DaysPercantages />
+      <Header />
       {rows.length > 0 ? (
         <Wrapper>
           <GridContainer>
